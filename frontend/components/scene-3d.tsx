@@ -1,11 +1,82 @@
 "use client"
 
-import { Canvas } from "@react-three/fiber"
+import { Canvas, useThree } from "@react-three/fiber"
 import { Float, Environment, MeshDistortMaterial, Sphere, Torus, Box } from "@react-three/drei"
 import { Suspense, useRef, useMemo } from "react"
 import { useFrame } from "@react-three/fiber"
 import type { Mesh, Group } from "three"
 import { useTheme } from "next-themes"
+
+
+function AshokaChakra3D({ position = [0, 0, -3] }: { position?: [number, number, number] }) {
+  const groupRef = useRef<Group>(null)
+
+  useFrame((state) => {
+    if (groupRef.current) {
+      // Clockwise rotation
+      groupRef.current.rotation.z = -state.clock.elapsedTime * 0.6
+    }
+  })
+
+  const spokes = useMemo(() => {
+    return Array.from({ length: 24 }, (_, i) => {
+      const angle = (i / 24) * Math.PI * 2
+      return angle
+    })
+  }, [])
+
+  return (
+    <group ref={groupRef} position={position} scale={1.8}>
+      {/* Outer White Ring */}
+      <Torus args={[1.1, 0.06, 32, 200]}>
+        <meshStandardMaterial
+          color="#ffffff"
+          emissive="#ffffff"
+          emissiveIntensity={0.4}
+          metalness={0.6}
+          roughness={0.2}
+        />
+      </Torus>
+
+      {/* Inner Blue Ring */}
+      <Torus args={[0.9, 0.05, 32, 200]}>
+        <meshStandardMaterial
+          color="#000080"
+          emissive="#1a1aff"
+          emissiveIntensity={0.6}
+          metalness={0.7}
+          roughness={0.2}
+        />
+      </Torus>
+
+      {/* Center Hub */}
+      <Sphere args={[0.12, 32, 32]}>
+        <meshStandardMaterial
+          color="#000080"
+          emissive="#1a1aff"
+          emissiveIntensity={0.8}
+        />
+      </Sphere>
+
+      {/* 24 Spokes */}
+      {spokes.map((angle, i) => (
+        <Box
+          key={i}
+          args={[0.05, 1.6, 0.05]}
+          rotation={[0, 0, angle]}
+        >
+          <meshStandardMaterial
+            color="#000080"
+            emissive="#1a1aff"
+            emissiveIntensity={0.7}
+          />
+        </Box>
+      ))}
+      
+    </group>
+  )
+}
+
 
 function FloatingOrb({ position, color, speed = 1, distort = 0.3, size = 1 }: {
   position: [number, number, number]
@@ -132,6 +203,7 @@ function ParticleRing({ color = "#7c3aed" }: { color?: string }) {
   )
 }
 
+
 function SceneContent({ isDark }: { isDark: boolean }) {
   // Indian National Flag Colors
   // Saffron: #FF9933, White: #FFFFFF, Navy Blue: #000080, Green: #138808
@@ -148,10 +220,29 @@ function SceneContent({ isDark }: { isDark: boolean }) {
     <>
       <Environment preset={isDark ? "night" : "sunset"} />
       <ambientLight intensity={isDark ? 0.5 : 0.7} />
-      <pointLight position={[10, 10, 10]} intensity={isDark ? 1 : 1.2} color={colors.saffron} />
-      <pointLight position={[-10, -10, -10]} intensity={isDark ? 0.6 : 0.7} color={colors.green} />
-      <pointLight position={[0, 10, 5]} intensity={isDark ? 0.4 : 0.5} color={colors.navyBlue} />
-      
+      <pointLight
+        position={[12, 12, 8]}
+        intensity={isDark ? 2.2 : 2.5}
+        distance={40}
+        decay={1.5}
+        color={colors.saffron}
+      />
+
+      <pointLight
+        position={[-12, -12, 8]}
+        intensity={isDark ? 1.8 : 2.1}
+        distance={40}
+        decay={1.5}
+        color={colors.green}
+      />
+
+      <pointLight
+      position={[0, 8, 6]}
+      intensity={isDark ? 0.9 : 1.1}
+      distance={30}
+      color={colors.navyBlue}
+      />
+
       {/* Saffron orbs - top section */}
       <FloatingOrb position={[-4, 3, -2]} color={colors.saffron} speed={0.8} distort={0.4} size={1.2} />
       <FloatingOrb position={[3, 2.5, -3]} color={colors.saffronLight} speed={1.1} distort={0.3} size={0.7} />
@@ -163,17 +254,20 @@ function SceneContent({ isDark }: { isDark: boolean }) {
       <FloatingOrb position={[1, -2.5, -2]} color={colors.green} speed={1} distort={0.3} size={0.4} />
       
       {/* Navy Blue elements - center accents */}
-      <FloatingOrb position={[0, 0, -3]} color={colors.navyBlue} speed={0.7} distort={0.2} size={0.8} />
+      <Float speed={0.8} rotationIntensity={0.2} floatIntensity={0.5}>
+        <AshokaChakra3D position={[0, 0, -3]} />
+      </Float>
+
+
       
       {/* Decorative torus - tricolor effect */}
       <FloatingTorus position={[5, 1, -2]} color={colors.saffron} speed={0.7} />
       <FloatingTorus position={[-5, -1, -3]} color={colors.green} speed={0.9} />
-      <FloatingTorus position={[0, 0, -4]} color={colors.navyBlue} speed={0.6} />
+      
       
       {/* Wireframe cubes */}
       <FloatingCube position={[2, -3, -2]} color={colors.saffron} speed={0.6} />
       <FloatingCube position={[-2, 3, -3]} color={colors.green} speed={0.8} />
-      <FloatingCube position={[4, 0, -3]} color={colors.navyBlue} speed={0.7} />
       
      
     </>
