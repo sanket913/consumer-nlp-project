@@ -1,0 +1,32 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FF9933"/>
+      <stop offset="33%" stop-color="#FF9933"/>
+      <stop offset="33%" stop-color="#FFFFFF"/>
+      <stop offset="66%" stop-color="#FFFFFF"/>
+      <stop offset="66%" stop-color="#138808"/>
+      <stop offset="100%" stop-color="#138808"/>
+    </linearGradient>
+
+    <radialGradient id="chakraGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000080"/>
+      <stop offset="100%" stop-color="#1a1a6e"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Hexagon -->
+  <path d="M24 4L42 14V34L24 44L6 34V14L24 4Z" fill="url(#logoGradient)"/>
+
+  <!-- Chakra -->
+  <circle cx="24" cy="24" r="7" fill="url(#chakraGradient)"/>
+  <circle cx="24" cy="24" r="5.5" fill="none" stroke="white" stroke-width="0.6"/>
+
+  <!-- Spokes -->
+  <g stroke="white" stroke-width="0.8">
+    <line x1="24" y1="19" x2="24" y2="29"/>
+    <line x1="19" y1="24" x2="29" y2="24"/>
+    <line x1="20" y1="20" x2="28" y2="28"/>
+    <line x1="28" y1="20" x2="20" y2="28"/>
+  </g>
+</svg>
