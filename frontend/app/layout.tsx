@@ -4,6 +4,8 @@ import { Inter, Space_Grotesk } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
+import ClientLoaderWrapper from "@/components/client-loader-wrapper"
+
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space" });
@@ -39,8 +41,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <ClientLoaderWrapper>
+            {children}
+          </ClientLoaderWrapper>
         </ThemeProvider>
+
         <Analytics />
       </body>
     </html>
