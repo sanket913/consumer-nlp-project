@@ -48,7 +48,7 @@ export default function AnalyzerSection() {
 
     try {
   const response = await axios.post(
-    "http://127.0.0.1:8000/predict",
+    "https://consumer-nlp-project.onrender.com/predict",
     { text: inputText.trim() },
     { timeout: 10000 }
   )
