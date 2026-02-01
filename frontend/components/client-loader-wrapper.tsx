@@ -8,7 +8,7 @@ export default function ClientWrapper({ children }: { children: React.ReactNode 
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 2600)
+    const t = setTimeout(() => setLoading(false), 4200)
     return () => clearTimeout(t)
   }, [])
 
@@ -44,3 +44,4 @@ export default function ClientWrapper({ children }: { children: React.ReactNode 
     </>
   )
 }
+
